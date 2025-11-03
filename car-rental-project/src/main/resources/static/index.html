@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Car Rental</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Car Rental System</h1>
+
+    <section id="available">
+      <h2>Available Cars</h2>
+      <button id="btnRefresh">Show Available Cars</button>
+      <div id="carsList"></div>
+    </section>
+
+    <section id="check">
+      <h2>Check Availability</h2>
+      <input type="number" id="checkCarId" placeholder="Car ID" />
+      <button id="btnCheck">Check</button>
+      <div id="checkResult"></div>
+    </section>
+
+    <section id="estimate">
+      <h2>Estimate Rental</h2>
+      <input type="number" id="estCarId" placeholder="Car ID" />
+      <input type="number" id="estDays" placeholder="Days" />
+      <button id="btnEstimate">Estimate</button>
+      <div id="estResult"></div>
+    </section>
+
+    <section id="rent">
+      <h2>Rent a Car</h2>
+      <input type="number" id="rentCarId" placeholder="Car ID" />
+      <input type="number" id="rentDays" placeholder="Days" />
+      <button id="btnRent">Rent</button>
+      <div id="rentResult"></div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
