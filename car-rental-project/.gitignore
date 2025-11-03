@@ -1,0 +1,13 @@
+# Ignore build and IDE files
+target/
+.idea/
+*.iml
+
+# Logs and temp files
+*.log
+logs/
+tmp/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
