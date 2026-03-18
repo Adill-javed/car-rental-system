@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>My Requests</title>
+    <style>
+
+        body{
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background:#1f2937;;
+            margin:0;
+            padding:0;
+        }
+
+        .container{
+            width:90%;
+            max-width:1000px;
+            margin:40px auto;
+            background:white;
+            padding:30px;
+            border-radius:10px;
+            box-shadow:0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        h1,h2{
+            text-align:center;
+            color:#FFFFFF;
+        }
+
+        input{
+            width:100%;
+            padding:10px;
+            margin:8px 0;
+            border:1px solid #ccc;
+            border-radius:6px;
+        }
+
+        button{
+            padding:10px 15px;
+            background:#007bff;
+            color:white;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#0056b3;
+        }
+
+        a{
+            text-decoration:none;
+            padding:8px 12px;
+            background:#28a745;
+            color:white;
+            border-radius:5px;
+            margin-right:10px;
+        }
+
+        a:hover{
+            background:#1e7e34;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            margin-top:20px;
+        }
+
+        th{
+            background:#007bff;
+            color:white;
+            padding:10px;
+        }
+
+        td{
+            padding:10px;
+            border-bottom:1px solid #ddd;
+            text-align:center;
+        }
+
+        tr:hover{
+            background:#f1f1f1;
+        }
+
+        img{
+            border-radius:8px;
+        }
+
+        .nav{
+            margin-bottom:20px;
+            text-align:center;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<h1>My Rental Requests</h1>
+
+<table border="1">
+
+    <tr>
+        <th>Request ID</th>
+        <th>Car ID</th>
+        <th>Days</th>
+        <th>Status</th>
+    </tr>
+
+    <tr th:each="req : ${@rentalRequestService.getRequestsByUser(1)}">
+
+        <td th:text="${req.id}"></td>
+        <td th:text="${req.carId}"></td>
+        <td th:text="${req.days}"></td>
+        <td th:text="${req.status}"></td>
+
+    </tr>
+
+</table>
+
+</body>
+</html>

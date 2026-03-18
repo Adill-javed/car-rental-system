@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+
+        body{
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background:#1f2937;
+            margin:0;
+            padding:0;
+        }
+
+        .container{
+            width:90%;
+            max-width:1000px;
+            margin:40px auto;
+            background:white;
+            padding:30px;
+            border-radius:10px;
+            box-shadow:0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        h1,h2{
+            text-align:center;
+            color:#FFFFFF;
+        }
+
+        input{
+            width:100%;
+            padding:10px;
+            margin:8px 0;
+            border:1px solid #ccc;
+            border-radius:6px;
+        }
+
+        button{
+            padding:10px 15px;
+            background:#007bff;
+            color:white;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#0056b3;
+        }
+
+        a{
+            text-decoration:none;
+            padding:8px 12px;
+            background:#28a745;
+            color:white;
+            border-radius:5px;
+            margin-right:10px;
+        }
+
+        a:hover{
+            background:#1e7e34;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            margin-top:20px;
+        }
+
+        th{
+            background:#007bff;
+            color:white;
+            padding:10px;
+        }
+
+        td{
+            padding:10px;
+            border-bottom:1px solid #ddd;
+            text-align:center;
+        }
+
+        tr:hover{
+            background:#f1f1f1;
+        }
+
+        img{
+            border-radius:8px;
+        }
+
+        .nav{
+            margin-bottom:20px;
+            text-align:center;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<h1>Admin Dashboard</h1>
+
+<a href="/admin/addcar">Add Car</a>
+<a href="/admin/requests">View Requests</a>
+
+<h2>Cars</h2>
+
+<table border="1">
+
+    <tr>
+        <th>Name</th>
+        <th>Brand</th>
+        <th>Price</th>
+        <th>Image</th>
+    </tr>
+
+    <tr th:each="car : ${@carService.getAllCars()}">
+
+        <td th:text="${car.name}"></td>
+        <td th:text="${car.brand}"></td>
+        <td th:text="${car.price}"></td>
+        <td><img th:src="${car.image}" width="120"></td>
+
+    </tr>
+
+</table>
+
+</body>
+</html>
