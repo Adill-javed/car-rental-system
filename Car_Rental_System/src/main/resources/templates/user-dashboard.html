@@ -1,142 +1,80 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>User Dashboard</title>
-    <style>
-
-        body{
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background:#1f2937;;
-            margin:0;
-            padding:0;
-        }
-
-        .container{
-            width:90%;
-            max-width:1000px;
-            margin:40px auto;
-            background:white;
-            padding:30px;
-            border-radius:10px;
-            box-shadow:0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        h1,h2{
-            text-align:center;
-            color:#FFFFFF;
-        }
-
-        input{
-            width:100%;
-            padding:10px;
-            margin:8px 0;
-            border:1px solid #ccc;
-            border-radius:6px;
-        }
-
-        button{
-            padding:10px 15px;
-            background:#007bff;
-            color:white;
-            border:none;
-            border-radius:6px;
-            cursor:pointer;
-        }
-
-        button:hover{
-            background:#0056b3;
-        }
-
-        a{
-            text-decoration:none;
-            padding:8px 12px;
-            background:#28a745;
-            color:white;
-            border-radius:5px;
-            margin-right:10px;
-        }
-
-        a:hover{
-            background:#1e7e34;
-        }
-
-        table{
-            width:100%;
-            border-collapse:collapse;
-            margin-top:20px;
-        }
-
-        th{
-            background:#007bff;
-            color:white;
-            padding:10px;
-        }
-
-        td{
-            padding:10px;
-            border-bottom:1px solid #ddd;
-            text-align:center;
-        }
-
-        tr:hover{
-            background:#f1f1f1;
-        }
-
-        img{
-            border-radius:8px;
-        }
-
-        .nav{
-            margin-bottom:20px;
-            text-align:center;
-        }
-
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AutoRent</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/user-dashboard.css">
 </head>
-
 <body>
 
-<h1>Available Cars</h1>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-inner">
+                <div class="navbar-left">
+                    <span class="navbar-brand text-transparent-gradient">AutoRent</span>
+                    <a href="/user/dashboard" class="nav-link active">Browse Cars</a>
+                    <a href="/user/myrequests" class="nav-link">My Rentals</a>
+                </div>
+                <div class="navbar-right">
+                    <span class="welcome-text">Welcome, <span th:text="${session.loggedInUser.name}">User</span></span>
+                    <a href="/logout" class="nav-link danger">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-<table border="1">
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="navbar-container">
+            <h1 class="hero-title">Find your perfect ride</h1>
+            <p class="hero-subtitle">Explore our fleet of premium cars and book your next adventure today.</p>
+        </div>
+    </div>
 
-    <tr>
-        <th>Name</th>
-        <th>Brand</th>
-        <th>Price</th>
-        <th>Image</th>
-        <th>Request</th>
-    </tr>
+    <!-- Main Content -->
+    <div class="dashboard-container">
+        
+        <!-- Car Grid -->
+        <div class="car-grid">
+            <div th:each="car : ${@carService.getAllCars()}" class="car-card">
+                <div class="car-image-container">
+                    <img th:src="${car.image}" alt="Car Image" class="car-image">
+                    <div class="image-overlay"></div>
+                </div>
+                <div class="car-details">
+                    <div>
+                        <div class="car-brand" th:text="${car.brand}">Brand</div>
+                        <h2 class="car-name" th:text="${car.name}">Car Name</h2>
+                        <div class="car-price">$<span th:text="${car.price}"></span><span> / day</span></div>
+                    </div>
+                    
+                    <form action="/user/request" method="post">
+                        <input type="hidden" name="carId" th:value="${car.id}">
+                        <div class="booking-form">
+                            <input type="number" name="days" placeholder="Days" required min="1" max="30" class="booking-input">
+                            <button type="submit" class="btn-book">
+                                Book Now
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Empty State if no cars -->
+            <div th:if="${#lists.isEmpty(@carService.getAllCars())}" class="empty-state">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h3 class="empty-state-title">No cars available</h3>
+                <p class="empty-state-text">Check back later for new inventory.</p>
+            </div>
+        </div>
 
-    <tr th:each="car : ${@carService.getAllCars()}">
-
-        <td th:text="${car.name}"></td>
-        <td th:text="${car.brand}"></td>
-        <td th:text="${car.price}"></td>
-
-        <td>
-            <img th:src="${car.image}" width="120">
-        </td>
-
-        <td>
-
-            <form action="/user/request" method="post">
-
-                <input type="hidden" name="carId" th:value="${car.id}">
-
-                <input type="number" name="days" placeholder="Days" required>
-
-                <button type="submit">Request</button>
-
-            </form>
-
-        </td>
-
-    </tr>
-
-</table>
-
-<a href="/user/myrequests">View My Requests</a>
+    </div>
 
 </body>
 </html>

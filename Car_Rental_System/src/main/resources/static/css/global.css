@@ -1,0 +1,148 @@
+:root {
+    --primary-color: #3b82f6; /* Blue 500 */
+    --primary-hover: #2563eb; /* Blue 600 */
+    --secondary-color: #2dd4bf; /* Teal 400 */
+    --secondary-hover: #14b8a6; /* Teal 500 */
+    --bg-dark: #111827; /* Gray 900 */
+    --bg-light: #f3f4f6; /* Gray 100 */
+    --text-dark: #1f2937; /* Gray 800 */
+    --text-light: #f9fafb; /* Gray 50 */
+    --text-muted: #9ca3af; /* Gray 400 */
+    --danger: #ef4444; /* Red 500 */
+    --danger-hover: #dc2626; /* Red 600 */
+    --success: #10b981; /* Emerald 500 */
+    --border-color: #e5e7eb; /* Gray 200 */
+    --font-family: 'Inter', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography Utility */
+.text-transparent-gradient {
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    background-image: linear-gradient(to right, #60a5fa, #5eead4);
+}
+
+/* Glassmorphism */
+.glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Navbar Shared Styles */
+.navbar {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.navbar-container {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.navbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 4rem;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.25rem;
+    text-decoration: none;
+}
+
+.nav-link {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #d1d5db;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: white;
+    background-color: #374151;
+}
+
+.nav-link.danger {
+    background-color: var(--danger);
+    color: white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.nav-link.danger:hover {
+    background-color: var(--danger-hover);
+}
+
+/* Shared Alerts */
+.alert {
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    text-align: center;
+}
+
+.alert-error {
+    background-color: rgba(239, 68, 68, 0.2);
+    border: 1px solid var(--danger);
+    color: #fca5a5;
+}
+
+.alert-success {
+    background-color: rgba(16, 185, 129, 0.2);
+    border: 1px solid var(--success);
+    color: #6ee7b7;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    outline: none;
+}
+
+.btn-primary {
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    color: white;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(to right, var(--primary-hover), var(--secondary-hover));
+    transform: translateY(-2px);
+}

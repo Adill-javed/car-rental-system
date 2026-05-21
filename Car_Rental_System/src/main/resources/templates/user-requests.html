@@ -1,123 +1,87 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
-    <title>My Requests</title>
-    <style>
-
-        body{
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background:#1f2937;;
-            margin:0;
-            padding:0;
-        }
-
-        .container{
-            width:90%;
-            max-width:1000px;
-            margin:40px auto;
-            background:white;
-            padding:30px;
-            border-radius:10px;
-            box-shadow:0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        h1,h2{
-            text-align:center;
-            color:#FFFFFF;
-        }
-
-        input{
-            width:100%;
-            padding:10px;
-            margin:8px 0;
-            border:1px solid #ccc;
-            border-radius:6px;
-        }
-
-        button{
-            padding:10px 15px;
-            background:#007bff;
-            color:white;
-            border:none;
-            border-radius:6px;
-            cursor:pointer;
-        }
-
-        button:hover{
-            background:#0056b3;
-        }
-
-        a{
-            text-decoration:none;
-            padding:8px 12px;
-            background:#28a745;
-            color:white;
-            border-radius:5px;
-            margin-right:10px;
-        }
-
-        a:hover{
-            background:#1e7e34;
-        }
-
-        table{
-            width:100%;
-            border-collapse:collapse;
-            margin-top:20px;
-        }
-
-        th{
-            background:#007bff;
-            color:white;
-            padding:10px;
-        }
-
-        td{
-            padding:10px;
-            border-bottom:1px solid #ddd;
-            text-align:center;
-        }
-
-        tr:hover{
-            background:#f1f1f1;
-        }
-
-        img{
-            border-radius:8px;
-        }
-
-        .nav{
-            margin-bottom:20px;
-            text-align:center;
-        }
-
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Rentals - AutoRent</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/user-requests.css">
 </head>
-
 <body>
 
-<h1>My Rental Requests</h1>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-inner">
+                <div class="navbar-left">
+                    <span class="navbar-brand text-transparent-gradient">AutoRent</span>
+                    <a href="/user/dashboard" class="nav-link">Browse Cars</a>
+                    <a href="/user/myrequests" class="nav-link active">My Rentals</a>
+                </div>
+                <div class="navbar-right" style="display: flex; align-items: center; gap: 1rem;">
+                    <span style="font-size: 0.875rem; color: #d1d5db;">Welcome, <span style="font-weight: 600; color: white;" th:text="${session.loggedInUser.name}">User</span></span>
+                    <a href="/logout" class="nav-link danger">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-<table border="1">
+    <!-- Main Content -->
+    <div class="requests-container">
+        
+        <div class="requests-header">
+            <h1 class="requests-title">My Rentals</h1>
+            <p class="requests-subtitle">View and track all your past and current car rental requests.</p>
+        </div>
 
-    <tr>
-        <th>Request ID</th>
-        <th>Car ID</th>
-        <th>Days</th>
-        <th>Status</th>
-    </tr>
+        <div class="table-container">
+            <table class="requests-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Request ID</th>
+                        <th scope="col">Car ID</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="req : ${@rentalRequestService.getRequestsByUser(session.loggedInUser.id)}">
+                        <td class="req-id" th:text="${'#' + req.id}"></td>
+                        <td class="car-id" th:text="${'Car #' + req.carId}"></td>
+                        <td>
+                            <div class="duration-cell">
+                                <svg class="duration-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span th:text="${req.days + ' Days'}"></span>
+                            </div>
+                        </td>
+                        <td>
+                            <span th:if="${req.status == 'PENDING'}" class="status-badge status-pending">Pending Review</span>
+                            <span th:if="${req.status == 'APPROVED'}" class="status-badge status-approved">Approved</span>
+                            <span th:if="${req.status == 'REJECTED'}" class="status-badge status-rejected">Rejected</span>
+                            <span th:if="${req.status == 'RETURNED'}" class="status-badge status-returned">Returned</span>
+                        </td>
+                    </tr>
+                    
+                    <tr th:if="${#lists.isEmpty(@rentalRequestService.getRequestsByUser(session.loggedInUser.id))}">
+                        <td colspan="4" class="empty-table">
+                            <svg class="empty-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <h3 class="empty-title">No rentals found</h3>
+                            <p class="empty-text">You haven't requested any cars yet.</p>
+                            <a href="/user/dashboard" class="btn-browse">
+                                Browse Cars
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <tr th:each="req : ${@rentalRequestService.getRequestsByUser(1)}">
-
-        <td th:text="${req.id}"></td>
-        <td th:text="${req.carId}"></td>
-        <td th:text="${req.days}"></td>
-        <td th:text="${req.status}"></td>
-
-    </tr>
-
-</table>
+    </div>
 
 </body>
 </html>

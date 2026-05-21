@@ -14,10 +14,16 @@ public class CarService {
     private CarRepository carRepository;
 
     public void saveCar(Car car) {
+
         carRepository.save(car);
     }
 
     public List<Car> getAllCars() {
+
         return carRepository.findAll();
+    }
+    
+    public void deleteCar(Long id) {
+        carRepository.deleteById(id);
     }
 }

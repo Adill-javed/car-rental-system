@@ -3,29 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Rental System - Login</title>
+    <title>Car Rental System - Register</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/global.css">
-    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/register.css">
 </head>
-<body class="login-bg">
+<body class="register-bg">
     
     <div class="overlay"></div>
 
-    <div class="glass login-card">
-        <div class="login-header">
+    <div class="glass register-card">
+        <div class="register-header">
             <h1 class="text-transparent-gradient">AutoRent</h1>
-            <p>Sign in to your account</p>
-        </div>
-
-        <div th:if="${param.success}" class="alert alert-success">
-            Registration successful! Please login.
+            <p>Create a new account</p>
         </div>
         
         <div th:if="${error}" class="alert alert-error" th:text="${error}">
         </div>
 
-        <form th:action="@{/login}" method="post">
+        <form th:action="@{/register}" method="post">
+            <div class="form-group">
+                <label class="form-label" for="name">Full Name</label>
+                <input type="text" id="name" name="name" required class="form-input" placeholder="John Doe">
+            </div>
+
             <div class="form-group">
                 <label class="form-label" for="email">Email Address</label>
                 <input type="email" id="email" name="email" required class="form-input" placeholder="you@example.com">
@@ -37,13 +38,13 @@
             </div>
 
             <button type="submit" class="btn btn-primary btn-full">
-                Sign In
+                Sign Up
             </button>
         </form>
 
-        <p class="login-footer">
-            Don't have an account? 
-            <a href="/register" class="login-link">Create one</a>
+        <p class="register-footer">
+            Already have an account? 
+            <a href="/" class="register-link">Sign in</a>
         </p>
     </div>
 

@@ -38,6 +38,23 @@ public class RentalRequestService {
             repository.save(r);
         }
     }
+    
+    public void rejectRequest(Long id) {
+        RentalRequest r = repository.findById(id).orElse(null);
+        if (r != null) {
+            r.setStatus("REJECTED");
+            repository.save(r);
+        }
+    }
+    
+    public void returnCar(Long id) {
+        RentalRequest r = repository.findById(id).orElse(null);
+        if (r != null) {
+            r.setStatus("RETURNED");
+            repository.save(r);
+        }
+    }
+
     public List<RentalRequest> getRequestsByUser(Long userId) {
         return repository.findByUserId(userId);
     }

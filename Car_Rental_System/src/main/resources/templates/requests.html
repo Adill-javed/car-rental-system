@@ -1,132 +1,79 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
-    <title>Rental Requests</title>
-    <style>
-
-        body{
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background:#1f2937;;
-            margin:0;
-            padding:0;
-        }
-
-        .container{
-            width:90%;
-            max-width:1000px;
-            margin:40px auto;
-            background:white;
-            padding:30px;
-            border-radius:10px;
-            box-shadow:0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        h1,h2{
-            text-align:center;
-            color:#FFFFFF;
-        }
-
-        input{
-            width:100%;
-            padding:10px;
-            margin:8px 0;
-            border:1px solid #ccc;
-            border-radius:6px;
-        }
-
-        button{
-            padding:10px 15px;
-            background:#007bff;
-            color:white;
-            border:none;
-            border-radius:6px;
-            cursor:pointer;
-        }
-
-        button:hover{
-            background:#0056b3;
-        }
-
-        a{
-            text-decoration:none;
-            padding:8px 12px;
-            background:#28a745;
-            color:white;
-            border-radius:5px;
-            margin-right:10px;
-        }
-
-        a:hover{
-            background:#1e7e34;
-        }
-
-        table{
-            width:100%;
-            border-collapse:collapse;
-            margin-top:20px;
-        }
-
-        th{
-            background:#007bff;
-            color:white;
-            padding:10px;
-        }
-
-        td{
-            padding:10px;
-            border-bottom:1px solid #ddd;
-            text-align:center;
-        }
-
-        tr:hover{
-            background:#f1f1f1;
-        }
-
-        img{
-            border-radius:8px;
-        }
-
-        .nav{
-            margin-bottom:20px;
-            text-align:center;
-        }
-
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Requests - AutoRent Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/requests.css">
 </head>
-
 <body>
 
-<h1>Rental Requests</h1>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-inner">
+                <div class="navbar-left">
+                    <span class="navbar-brand text-transparent-gradient">AutoRent Admin</span>
+                    <a href="/admin/dashboard" class="nav-link">Dashboard</a>
+                    <a href="/admin/requests" class="nav-link active">Manage Requests</a>
+                </div>
+                <div>
+                    <a href="/logout" class="nav-link danger">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-<table border="1">
+    <!-- Main Content -->
+    <div class="requests-container">
+        
+        <div class="requests-header">
+            <h1 class="requests-title">Rental Requests</h1>
+        </div>
 
-    <tr>
-        <th>Request ID</th>
-        <th>Car ID</th>
-        <th>User ID</th>
-        <th>Days</th>
-        <th>Status</th>
-        <th>Action</th>
-    </tr>
+        <div class="table-container">
+            <table class="requests-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Req ID</th>
+                        <th scope="col">Car ID</th>
+                        <th scope="col">User ID</th>
+                        <th scope="col">Days</th>
+                        <th scope="col">Status</th>
+                        <th scope="col" class="text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="req : ${@rentalRequestService.getAllRequests()}">
+                        <td class="req-id" th:text="${'#' + req.id}"></td>
+                        <td th:text="${req.carId}"></td>
+                        <td th:text="${req.userId}"></td>
+                        <td th:text="${req.days + ' days'}"></td>
+                        <td>
+                            <span th:if="${req.status == 'PENDING'}" class="status-badge status-pending">Pending</span>
+                            <span th:if="${req.status == 'APPROVED'}" class="status-badge status-approved">Approved</span>
+                            <span th:if="${req.status == 'REJECTED'}" class="status-badge status-rejected">Rejected</span>
+                            <span th:if="${req.status == 'RETURNED'}" class="status-badge status-returned">Returned</span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <a th:if="${req.status == 'PENDING'}" th:href="@{'/admin/approve/' + ${req.id}}" class="btn-action btn-approve">Approve</a>
+                                <a th:if="${req.status == 'PENDING'}" th:href="@{'/admin/reject/' + ${req.id}}" class="btn-action btn-reject">Reject</a>
+                                <a th:if="${req.status == 'APPROVED'}" th:href="@{'/admin/return/' + ${req.id}}" class="btn-action btn-return">Mark Returned</a>
+                                <span th:if="${req.status == 'REJECTED' || req.status == 'RETURNED'}" class="no-actions">No actions</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(@rentalRequestService.getAllRequests())}">
+                        <td colspan="6" class="empty-table">No rental requests found.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <tr th:each="req : ${@rentalRequestService.getAllRequests()}">
-
-        <td th:text="${req.id}"></td>
-        <td th:text="${req.carId}"></td>
-        <td th:text="${req.userId}"></td>
-        <td th:text="${req.days}"></td>
-        <td th:text="${req.status}"></td>
-
-        <td>
-
-            <a th:href="@{'/admin/approve/' + ${req.id}}">Approve</a>
-
-        </td>
-
-    </tr>
-
-</table>
+    </div>
 
 </body>
 </html>
